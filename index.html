@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" id="metaDesc" content="Shorif Diamond Topup Center BD - Free Fire Diamond Top Up">
+<title id="pageTitle">Shorif Diamond Topup Center BD</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top" id="header"><div class="brand"><img id="logo" src="assets/owner.png"><div><b id="brandName">Shorif Diamond</b><small id="brandSub">TOPUP CENTER BD</small></div></div>
+<nav><a href="#packages">Packages</a><a href="#order">Order</a><a href="#about">About</a><button id="adminBtn">👑 Admin</button></nav></header>
+
+<section class="hero" id="hero"><div class="heroText"><span class="badge" id="heroBadge">⚡ FAST • TRUSTED • MANUAL TOP-UP</span>
+<h1 id="heroTitle">Free Fire Diamond <span>Top-Up</span></h1><p id="heroText">আপনার UID ও Game Code দিয়ে সহজে Diamond Top-Up করুন। বর্তমানে টপ-আপ ম্যানুয়ালি করা হয়।</p>
+<div class="heroBtns"><a class="primary" href="#order" id="heroButton">💎 Order Now</a><a class="secondary" id="waHero" target="_blank">WhatsApp Support</a></div></div>
+<div class="ownerCard"><img id="ownerHero" src="assets/owner.png"><b id="ownerName">Shorif</b><span id="ownerRole">Owner & Top-Up Manager</span></div></section>
+
+<section class="trust" id="trust"><div>🔒 <b>Secure Order</b><small>তথ্য গোপন রাখা হবে</small></div><div>⚡ <b>Manual Top-Up</b><small>বর্তমানে নিজে টপ-আপ করি</small></div><div>💬 <b>Direct Support</b><small>WhatsApp-এ যোগাযোগ</small></div></section>
+
+<section id="packages" class="section"><h2 id="packagesTitle">🌟 UID TOPUP LIST 🌟</h2><p class="muted" id="packagesSubtitle">🥇 শুধুমাত্র Game Code দিয়ে 🥇</p><div id="packageGrid" class="grid"></div></section>
+
+<section id="order" class="section orderSection"><div class="formCard"><h2 id="orderTitle">🎯 Order Form</h2><p class="muted">প্যাকেজ নির্বাচন করে তথ্য পূরণ করুন।</p>
+<form id="orderForm"><label>Package<select id="packageSelect" required></select></label><label>Free Fire UID<input id="uid" inputmode="numeric" required placeholder="আপনার UID"></label><label>Game Code<input id="gameCode" required placeholder="Game Code"></label><label>আপনার নাম<input id="customerName" required placeholder="নাম"></label><label>যোগাযোগ নম্বর<input id="customerPhone" required placeholder="01XXXXXXXXX"></label><button class="primary full" type="submit">📲 Order WhatsApp-এ পাঠান</button></form></div>
+<div class="payCard"><h2>💳 Payment</h2><p id="paymentText">Payment করার আগে অর্ডার কনফার্ম করুন।</p><div class="number" id="paymentNumber">01781893290</div><p>এই নম্বরে পেমেন্ট করে Transaction ID WhatsApp-এ পাঠান।</p><a class="primary full" id="waPay" target="_blank">WhatsApp Support</a></div></section>
+
+<section class="section owner" id="about"><div><img id="ownerAbout" src="assets/owner.png"></div><div><span class="badge">ABOUT THE OWNER</span><h2 id="aboutTitle">আপনার আস্থা আমাদের ❤️</h2><p id="aboutText">Shorif Diamond Topup Center BD — বর্তমানে ম্যানুয়ালভাবে সহজ Free Fire Top-Up সেবা।</p><p id="aboutContact">সমস্যা হলে সরাসরি WhatsApp-এ যোগাযোগ করুন।</p></div></section>
+
+<footer id="footer"><div><b id="footerName">💎 Shorif Diamond Topup Center BD</b><p id="footerTag">Free Fire Diamond Top-Up Service</p></div><div><p>📱 <span id="footerPhone">01781893290</span></p><p>✉️ <span id="footerEmail">mdshorifms0716733@gmail.com</span></p></div></footer>
+
+<div class="modal hidden" id="adminModal"><div class="modalBox"><button class="close" id="closeAdmin">×</button>
+<div id="loginView"><h2>👑 Admin Login</h2><p class="muted">শুধু মালিকের জন্য</p><input id="adminUser" placeholder="Username"><input id="adminPass" type="password" placeholder="Password"><button class="primary full" id="loginBtn">Login</button><p class="hint">প্রথমবার: admin / Shorif@12345</p></div>
+<div id="panelView" class="hidden"><h2>⚙️ Full Website Admin</h2><div class="tabs"><button data-tab="general">General</button><button data-tab="design">Design</button><button data-tab="packages">Packages</button></div>
+<div class="tab" id="tab-general"><label>Website Name<input id="aSiteName"></label><label>Owner Name<input id="aOwnerName"></label><label>Owner Role<input id="aOwnerRole"></label><label>Payment Number<input id="aPayment"></label><label>WhatsApp Number<input id="aWhatsapp"></label><label>Support Email<input id="aEmail"></label><label>Hero Badge<input id="aBadge"></label><label>Hero Title<input id="aHeroTitle"></label><label>Hero Description<textarea id="aHeroText"></textarea></label><label>Packages Heading<input id="aPackagesTitle"></label><label>Packages Subtitle<input id="aPackagesSubtitle"></label><label>About Title<input id="aAboutTitle"></label><label>About Text<textarea id="aAboutText"></textarea></label><label>SEO Description<textarea id="aSeo"></textarea></label></div>
+<div class="tab hidden" id="tab-design"><label>Background<input id="aBg" type="color"></label><label>Accent<input id="aAccent" type="color"></label><label>Card Background<input id="aCard" type="color"></label><label>Text<input id="aText" type="color"></label><label>Show Trust Bar<select id="aTrust"><option value="yes">Yes</option><option value="no">No</option></select></label><label>Owner Photo<input id="aPhoto" type="file" accept="image/*"></label></div>
+<div class="tab hidden" id="tab-packages"><div id="packageEditor"></div><button class="secondary full" id="addPackage">＋ Add Package</button></div>
+<button class="primary full" id="saveAll">💾 Save All Changes</button><button class="secondary full" id="logoutBtn">Logout</button><p class="hint">এই v2 ডেমোতে settings browser localStorage-এ সংরক্ষিত। Public launch-এর জন্য secure backend/database version বানানো উচিত।</p></div></div></div>
+<script src="script.js"></script></body></html>
