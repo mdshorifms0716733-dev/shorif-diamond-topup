@@ -3,106 +3,561 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Secure Admin — Shorif Diamond Topup Center BD</title>
+
+<title>Admin Panel — Shorif Diamond Topup Center BD</title>
 
 <link rel="stylesheet" href="style.css">
 
 <style>
-body{min-height:100vh}
-.adminWrap{max-width:760px;margin:30px auto;padding:16px}
-.card{background:var(--card);border:1px solid #252b3d;border-radius:18px;padding:22px;box-shadow:0 10px 35px rgba(0,0,0,.2)}
-input{width:100%;box-sizing:border-box;margin:7px 0 14px;padding:12px;border-radius:10px;border:1px solid #343b50;background:#0e1220;color:var(--text)}
-button{cursor:pointer}
-.hidden{display:none}
-.msg{padding:10px;border-radius:10px;margin:10px 0}
-.ok{background:#14351f}
-.err{background:#401b1b}
-.muted{opacity:.75}
-.debug{font-size:12px;word-break:break-all;opacity:.7;margin-top:10px}
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#0b0f19;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.wrap{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+.card{
+  background:#121827;
+  border:1px solid #273047;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.hidden{display:none!important}
+
+h1,h2,h3{
+  margin-top:0;
+}
+
+.muted{
+  opacity:.7;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin:6px 0 14px;
+  border:1px solid #35405a;
+  border-radius:10px;
+  background:#0b101c;
+  color:#fff;
+  outline:none;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+button{
+  border:0;
+  border-radius:10px;
+  padding:11px 16px;
+  cursor:pointer;
+  color:#fff;
+  font-weight:bold;
+  margin:3px;
+}
+
+.primary{background:#1877f2}
+.success{background:#159447}
+.danger{background:#d93025}
+.secondary{background:#343d52}
+
+button:hover{
+  opacity:.85;
+}
+
+.msg{
+  padding:12px;
+  border-radius:10px;
+  margin:12px 0;
+}
+
+.ok{
+  background:#123d26;
+  border:1px solid #1c7540;
+}
+
+.err{
+  background:#451c1c;
+  border:1px solid #8d3434;
+}
+
+.login{
+  max-width:480px;
+  margin:70px auto;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.profile img{
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #1877f2;
+  background:#222;
+}
+
+.profileFallback{
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#1877f2;
+  font-size:35px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.stat{
+  background:#182136;
+  border-radius:14px;
+  padding:18px;
+  border:1px solid #29344d;
+}
+
+.stat b{
+  display:block;
+  font-size:28px;
+  margin-top:5px;
+}
+
+.package{
+  border:1px solid #2c3650;
+  border-radius:14px;
+  padding:15px;
+  margin:10px 0;
+  background:#101625;
+}
+
+.packageTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  background:#1d6f42;
+  font-size:12px;
+}
+
+.badge.off{
+  background:#6b2a2a;
+}
+
+.order{
+  border:1px solid #2c3650;
+  border-radius:14px;
+  padding:15px;
+  margin:10px 0;
+  background:#101625;
+}
+
+.orderGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px 20px;
+}
+
+.label{
+  opacity:.6;
+  font-size:12px;
+}
+
+.value{
+  font-weight:bold;
+  word-break:break-word;
+}
+
+hr{
+  border:0;
+  border-top:1px solid #293249;
+  margin:25px 0;
+}
+
+@media(max-width:700px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .orderGrid{
+    grid-template-columns:1fr;
+  }
+
+  .packageTop{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="adminWrap">
+<div class="wrap">
 
-  <div class="card" id="loginCard">
-    <h1>👑 Secure Admin Login</h1>
-    <p class="muted">শুধু অনুমোদিত Admin account-এর জন্য।</p>
+<!-- LOGIN -->
+<div id="loginCard" class="card login">
 
-    <label>
-      Email
-      <input id="email" type="email" autocomplete="username" placeholder="Admin email">
-    </label>
+  <div style="text-align:center">
+    <div class="profileFallback" style="margin:auto">
+      👑
+    </div>
 
-    <label>
-      Password
-      <input id="password" type="password" autocomplete="current-password" placeholder="Password">
-    </label>
+    <h1 style="margin-top:15px">
+      Secure Admin Login
+    </h1>
 
-    <button class="primary full" id="login">Login</button>
-
-    <div id="loginMsg"></div>
-    <div id="debug" class="debug"></div>
+    <p class="muted">
+      Shorif Diamond Topup Center BD
+    </p>
   </div>
 
-  <div class="card hidden" id="panel">
+  <label>Email</label>
+  <input
+    id="email"
+    type="email"
+    placeholder="Admin Email"
+    autocomplete="username"
+  >
 
-    <h1>⚙️ Admin Panel</h1>
+  <label>Password</label>
+  <input
+    id="password"
+    type="password"
+    placeholder="Password"
+    autocomplete="current-password"
+  >
 
-    <p>Logged in as <b id="who"></b></p>
+  <button class="primary" id="loginBtn" style="width:100%">
+    🔐 Login
+  </button>
 
-    <div id="panelMsg"></div>
+  <div id="loginMsg"></div>
+
+</div>
+
+
+<!-- ADMIN PANEL -->
+<div id="panel" class="hidden">
+
+  <!-- PROFILE -->
+  <div class="card">
+
+    <div class="profile">
+
+      <img
+        src="Admin.png"
+        alt="Admin"
+        onerror="this.style.display='none';document.getElementById('adminFallback').style.display='flex';"
+      >
+
+      <div
+        id="adminFallback"
+        class="profileFallback"
+        style="display:none"
+      >
+        👑
+      </div>
+
+      <div>
+        <h2 style="margin-bottom:5px">
+          Shorif
+        </h2>
+
+        <div class="muted">
+          Administrator
+        </div>
+
+        <div id="adminEmail" class="muted"></div>
+      </div>
+
+    </div>
+
+    <button class="danger" id="logoutBtn">
+      🚪 Logout
+    </button>
+
+  </div>
+
+
+  <!-- MESSAGE -->
+  <div id="panelMsg"></div>
+
+
+  <!-- STATS -->
+  <div class="stats">
+
+    <div class="stat">
+      💎 Packages
+      <b id="totalPackages">0</b>
+    </div>
+
+    <div class="stat">
+      ✅ Active
+      <b id="activePackages">0</b>
+    </div>
+
+    <div class="stat">
+      ⏳ Pending
+      <b id="pendingOrders">0</b>
+    </div>
+
+    <div class="stat">
+      🎉 Completed
+      <b id="completedOrders">0</b>
+    </div>
+
+  </div>
+
+
+  <!-- PACKAGES -->
+  <div class="card">
+
+    <h2>💎 Diamond Packages</h2>
+
+    <p class="muted">
+      এখান থেকে Diamond package যোগ, পরিবর্তন বা মুছে ফেলতে পারবে।
+    </p>
+
+    <div class="card" style="background:#0e1421">
+
+      <h3 id="packageFormTitle">
+        ➕ নতুন Package
+      </h3>
+
+      <input type="hidden" id="packageId">
+
+      <label>Package Name</label>
+      <input
+        id="packageTitle"
+        placeholder="যেমন: 100 Diamonds"
+      >
+
+      <label>Diamonds</label>
+      <input
+        id="packageDiamonds"
+        placeholder="যেমন: 100 💎"
+      >
+
+      <label>Price</label>
+      <input
+        id="packagePrice"
+        placeholder="যেমন: 80 Tk"
+      >
+
+      <label>Sort Order</label>
+      <input
+        id="packageSort"
+        type="number"
+        value="0"
+      >
+
+      <label>
+        <input
+          id="packageActive"
+          type="checkbox"
+          checked
+          style="width:auto;margin-right:8px"
+        >
+        Active Package
+      </label>
+
+      <br>
+
+      <button class="success" id="savePackageBtn">
+        💾 Save Package
+      </button>
+
+      <button class="secondary" id="cancelPackageBtn">
+        Cancel
+      </button>
+
+    </div>
+
+    <div id="packageList">
+      Loading packages...
+    </div>
+
+  </div>
+
+
+  <!-- ORDERS -->
+  <div class="card">
+
+    <h2>📦 Customer Orders</h2>
+
+    <p class="muted">
+      নতুন order এবং order status এখান থেকে দেখতে পারবে।
+    </p>
+
+    <button class="primary" id="refreshOrdersBtn">
+      🔄 Refresh Orders
+    </button>
+
+    <div id="orderList" style="margin-top:15px">
+      Loading orders...
+    </div>
+
+  </div>
+
+
+  <!-- SITE SETTINGS -->
+  <div class="card">
+
+    <h2>⚙️ Website Settings</h2>
+
+    <p class="muted">
+      Website-এর নাম, payment number, WhatsApp এবং owner information পরিবর্তন করতে পারবে।
+    </p>
+
+    <label>Site Name</label>
+    <input id="siteName">
+
+    <label>Owner Name</label>
+    <input id="ownerName">
+
+    <label>Owner Role</label>
+    <input id="ownerRole">
+
+    <label>bKash / Payment Number</label>
+    <input id="paymentNumber">
+
+    <label>WhatsApp Number</label>
+    <input id="whatsappNumber">
+
+    <label>Support Email</label>
+    <input id="supportEmail">
+
+    <label>Hero Badge</label>
+    <input id="heroBadge">
+
+    <label>Hero Title</label>
+    <input id="heroTitle">
+
+    <label>Hero Text</label>
+    <textarea id="heroText"></textarea>
+
+    <label>About Title</label>
+    <input id="aboutTitle">
+
+    <label>About Text</label>
+    <textarea id="aboutText"></textarea>
+
+    <label>SEO Description</label>
+    <textarea id="seoDescription"></textarea>
+
+    <button class="success" id="saveSettingsBtn">
+      💾 Save Website Settings
+    </button>
+
+  </div>
+
+
+  <!-- PASSWORD -->
+  <div class="card">
 
     <h2>🔐 Change Password</h2>
 
     <p class="muted">
-      নতুন password দিলে Supabase Auth-এ নিরাপদভাবে update হবে।
+      Admin account-এর নতুন password দিতে পারবে।
     </p>
 
-    <label>
-      New Password
-      <input id="newPassword" type="password" minlength="8" placeholder="কমপক্ষে ৮ অক্ষর">
-    </label>
+    <label>New Password</label>
 
-    <button class="primary" id="changePassword">
-      Change Password
-    </button>
+    <input
+      id="newPassword"
+      type="password"
+      minlength="8"
+      placeholder="কমপক্ষে ৮ অক্ষর"
+    >
 
-    <hr>
-
-    <button class="secondary" id="logout">
-      Logout
+    <button class="primary" id="changePasswordBtn">
+      🔑 Change Password
     </button>
 
   </div>
 
 </div>
 
+</div>
+
+
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase-config.js"></script>
 
+
 <script>
 
-const {createClient}=supabase;
+const { createClient } = supabase;
 
-const client=createClient(
+const client = createClient(
   window.SUPABASE_URL,
   window.SUPABASE_PUBLISHABLE_KEY
 );
 
-const $=id=>document.getElementById(id);
 
-function msg(el,text,ok=false){
-  $(el).innerHTML =
-    '<div class="msg '+(ok?'ok':'err')+'">'+text+'</div>';
+const $ = id => document.getElementById(id);
+
+
+function showMsg(id,text,success=false){
+
+  $(id).innerHTML =
+    '<div class="msg '+(success?'ok':'err')+'">'
+    +escapeHtml(text)+
+    '</div>';
+
 }
 
-async function requireAdmin(user){
 
-  $('debug').textContent =
-    'Logged user ID: '+user.id;
+function escapeHtml(value){
+
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+
+}
+
+
+/* =========================
+   ADMIN CHECK
+========================= */
+
+async function checkAdmin(user){
 
   const {data,error}=await client
     .from('profiles')
@@ -112,9 +567,9 @@ async function requireAdmin(user){
 
   if(error){
 
-    msg(
+    showMsg(
       'loginMsg',
-      'Profile check error: '+error.message
+      'Admin check error: '+error.message
     );
 
     return false;
@@ -122,7 +577,7 @@ async function requireAdmin(user){
 
   if(!data){
 
-    msg(
+    showMsg(
       'loginMsg',
       'এই account-এর profile পাওয়া যায়নি।'
     );
@@ -132,7 +587,7 @@ async function requireAdmin(user){
 
   if(data.role!=='admin'){
 
-    msg(
+    showMsg(
       'loginMsg',
       'এই account-এর Admin access নেই।'
     );
@@ -140,14 +595,752 @@ async function requireAdmin(user){
     return false;
   }
 
-  $('who').textContent=user.email||user.id;
+  $('adminEmail').textContent =
+    user.email || user.id;
 
   $('loginCard').classList.add('hidden');
 
   $('panel').classList.remove('hidden');
 
+  await loadEverything();
+
   return true;
 }
+
+
+/* =========================
+   LOGIN
+========================= */
+
+$('loginBtn').onclick=async()=>{
+
+  const email=$('email').value.trim();
+  const password=$('password').value;
+
+  if(!email || !password){
+
+    showMsg(
+      'loginMsg',
+      'Email এবং Password দিন।'
+    );
+
+    return;
+  }
+
+  $('loginBtn').disabled=true;
+  $('loginBtn').textContent='Logging in...';
+
+  const {data,error}=await client.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  $('loginBtn').disabled=false;
+  $('loginBtn').textContent='🔐 Login';
+
+  if(error){
+
+    showMsg(
+      'loginMsg',
+      'Login failed: '+error.message
+    );
+
+    return;
+  }
+
+  await checkAdmin(data.user);
+
+};
+
+
+/* =========================
+   LOAD EVERYTHING
+========================= */
+
+async function loadEverything(){
+
+  await loadPackages();
+
+  await loadOrders();
+
+  await loadSettings();
+
+}
+
+
+/* =========================
+   PACKAGES
+========================= */
+
+async function loadPackages(){
+
+  const {data,error}=await client
+    .from('packages')
+    .select('*')
+    .order('sort_order',{ascending:true});
+
+  if(error){
+
+    $('packageList').innerHTML =
+      '<div class="msg err">'
+      +escapeHtml(error.message)+
+      '</div>';
+
+    return;
+  }
+
+  $('totalPackages').textContent =
+    data.length;
+
+  $('activePackages').textContent =
+    data.filter(x=>x.active).length;
+
+  if(!data.length){
+
+    $('packageList').innerHTML=
+      '<p class="muted">কোনো package নেই।</p>';
+
+    return;
+  }
+
+  $('packageList').innerHTML='';
+
+  data.forEach(pkg=>{
+
+    const div=document.createElement('div');
+
+    div.className='package';
+
+    div.innerHTML=`
+
+      <div class="packageTop">
+
+        <div>
+
+          <h3>
+            ${escapeHtml(pkg.title)}
+          </h3>
+
+          <div>
+            💎 ${escapeHtml(pkg.diamonds)}
+          </div>
+
+          <div>
+            💰 ${escapeHtml(pkg.price)}
+          </div>
+
+          <br>
+
+          <span class="badge ${pkg.active?'':'off'}">
+            ${pkg.active?'ACTIVE':'INACTIVE'}
+          </span>
+
+        </div>
+
+        <div>
+
+          <button
+            class="primary editPackage"
+            data-id="${pkg.id}">
+            ✏️ Edit
+          </button>
+
+          <button
+            class="danger deletePackage"
+            data-id="${pkg.id}">
+            🗑️ Delete
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+    $('packageList').appendChild(div);
+
+  });
+
+
+  document.querySelectorAll('.editPackage')
+    .forEach(btn=>{
+
+      btn.onclick=()=>{
+
+        const pkg=data.find(
+          x=>x.id===btn.dataset.id
+        );
+
+        if(pkg){
+
+          $('packageId').value=pkg.id;
+
+          $('packageTitle').value=pkg.title;
+
+          $('packageDiamonds').value=pkg.diamonds;
+
+          $('packagePrice').value=pkg.price;
+
+          $('packageSort').value=pkg.sort_order;
+
+          $('packageActive').checked=pkg.active;
+
+          $('packageFormTitle').textContent=
+            '✏️ Package Edit';
+
+          window.scrollTo({
+            top:300,
+            behavior:'smooth'
+          });
+
+        }
+
+      };
+
+    });
+
+
+  document.querySelectorAll('.deletePackage')
+    .forEach(btn=>{
+
+      btn.onclick=async()=>{
+
+        if(!confirm('এই package delete করতে চান?')){
+          return;
+        }
+
+        const {error}=await client
+          .from('packages')
+          .delete()
+          .eq('id',btn.dataset.id);
+
+        if(error){
+
+          showMsg(
+            'panelMsg',
+            'Delete failed: '+error.message
+          );
+
+          return;
+        }
+
+        showMsg(
+          'panelMsg',
+          'Package deleted successfully.',
+          true
+        );
+
+        await loadPackages();
+
+      };
+
+    });
+
+}
+
+
+/* =========================
+   SAVE PACKAGE
+========================= */
+
+$('savePackageBtn').onclick=async()=>{
+
+  const id=$('packageId').value;
+
+  const title=$('packageTitle').value.trim();
+
+  const diamonds=$('packageDiamonds').value.trim();
+
+  const price=$('packagePrice').value.trim();
+
+  const sortOrder=
+    parseInt($('packageSort').value)||0;
+
+  const active=
+    $('packageActive').checked;
+
+  if(!title || !diamonds || !price){
+
+    showMsg(
+      'panelMsg',
+      'Package Name, Diamonds এবং Price দিন।'
+    );
+
+    return;
+  }
+
+  const payload={
+    title,
+    diamonds,
+    price,
+    active,
+    sort_order:sortOrder
+  };
+
+  let result;
+
+  if(id){
+
+    result=await client
+      .from('packages')
+      .update(payload)
+      .eq('id',id);
+
+  }else{
+
+    result=await client
+      .from('packages')
+      .insert(payload);
+
+  }
+
+  if(result.error){
+
+    showMsg(
+      'panelMsg',
+      'Package save error: '+result.error.message
+    );
+
+    return;
+  }
+
+  showMsg(
+    'panelMsg',
+    id
+      ? 'Package successfully updated.'
+      : 'New package successfully added.',
+    true
+  );
+
+  resetPackageForm();
+
+  await loadPackages();
+
+};
+
+
+$('cancelPackageBtn').onclick=()=>{
+
+  resetPackageForm();
+
+};
+
+
+function resetPackageForm(){
+
+  $('packageId').value='';
+
+  $('packageTitle').value='';
+
+  $('packageDiamonds').value='';
+
+  $('packagePrice').value='';
+
+  $('packageSort').value='0';
+
+  $('packageActive').checked=true;
+
+  $('packageFormTitle').textContent=
+    '➕ নতুন Package';
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+async function loadOrders(){
+
+  const {data,error}=await client
+    .from('orders')
+    .select('*')
+    .order('created_at',{ascending:false});
+
+  if(error){
+
+    $('orderList').innerHTML=
+      '<div class="msg err">'
+      +escapeHtml(error.message)+
+      '</div>';
+
+    return;
+  }
+
+  const pending=data.filter(
+    x=>x.status==='pending'
+  ).length;
+
+  const completed=data.filter(
+    x=>x.status==='completed'
+  ).length;
+
+  $('pendingOrders').textContent=pending;
+
+  $('completedOrders').textContent=completed;
+
+
+  if(!data.length){
+
+    $('orderList').innerHTML=
+      '<p class="muted">এখনো কোনো order নেই।</p>';
+
+    return;
+  }
+
+
+  $('orderList').innerHTML='';
+
+
+  data.forEach(order=>{
+
+    const div=document.createElement('div');
+
+    div.className='order';
+
+    const date=
+      order.created_at
+      ? new Date(order.created_at).toLocaleString('bn-BD')
+      : '-';
+
+    div.innerHTML=`
+
+      <div class="orderGrid">
+
+        <div>
+          <div class="label">Customer</div>
+          <div class="value">
+            ${escapeHtml(order.customer_name)}
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Phone</div>
+          <div class="value">
+            ${escapeHtml(order.customer_phone)}
+          </div>
+        </div>
+
+        <div>
+          <div class="label">UID</div>
+          <div class="value">
+            ${escapeHtml(order.uid)}
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Game Code</div>
+          <div class="value">
+            ${escapeHtml(order.game_code)}
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Package ID</div>
+          <div class="value">
+            ${escapeHtml(order.package_id || '-')}
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Order Time</div>
+          <div class="value">
+            ${escapeHtml(date)}
+          </div>
+        </div>
+
+      </div>
+
+      <hr>
+
+      <label>Order Status</label>
+
+      <select class="orderStatus">
+
+        <option value="pending"
+          ${order.status==='pending'?'selected':''}>
+          ⏳ Pending
+        </option>
+
+        <option value="processing"
+          ${order.status==='processing'?'selected':''}>
+          🔄 Processing
+        </option>
+
+        <option value="completed"
+          ${order.status==='completed'?'selected':''}>
+          ✅ Completed
+        </option>
+
+        <option value="cancelled"
+          ${order.status==='cancelled'?'selected':''}>
+          ❌ Cancelled
+        </option>
+
+      </select>
+
+      <button
+        class="success saveOrder"
+        data-id="${order.id}">
+        💾 Save Status
+      </button>
+
+    `;
+
+    $('orderList').appendChild(div);
+
+  });
+
+
+  document.querySelectorAll('.saveOrder')
+    .forEach(btn=>{
+
+      btn.onclick=async()=>{
+
+        const parent=btn.closest('.order');
+
+        const status=
+          parent.querySelector('.orderStatus').value;
+
+        const {error}=await client
+          .from('orders')
+          .update({status})
+          .eq('id',btn.dataset.id);
+
+        if(error){
+
+          showMsg(
+            'panelMsg',
+            'Order update error: '+error.message
+          );
+
+          return;
+        }
+
+        showMsg(
+          'panelMsg',
+          'Order status successfully updated.',
+          true
+        );
+
+        await loadOrders();
+
+      };
+
+    });
+
+}
+
+
+$('refreshOrdersBtn').onclick=async()=>{
+
+  await loadOrders();
+
+  showMsg(
+    'panelMsg',
+    'Orders refreshed.',
+    true
+  );
+
+};
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+async function loadSettings(){
+
+  const {data,error}=await client
+    .from('site_settings')
+    .select('*')
+    .eq('id',1)
+    .maybeSingle();
+
+  if(error){
+
+    showMsg(
+      'panelMsg',
+      'Settings load error: '+error.message
+    );
+
+    return;
+  }
+
+  if(!data){
+    return;
+  }
+
+  $('siteName').value=data.site_name || '';
+
+  $('ownerName').value=data.owner_name || '';
+
+  $('ownerRole').value=data.owner_role || '';
+
+  $('paymentNumber').value=
+    data.payment_number || '';
+
+  $('whatsappNumber').value=
+    data.whatsapp_number || '';
+
+  $('supportEmail').value=
+    data.support_email || '';
+
+  $('heroBadge').value=
+    data.hero_badge || '';
+
+  $('heroTitle').value=
+    data.hero_title || '';
+
+  $('heroText').value=
+    data.hero_text || '';
+
+  $('aboutTitle').value=
+    data.about_title || '';
+
+  $('aboutText').value=
+    data.about_text || '';
+
+  $('seoDescription').value=
+    data.seo_description || '';
+
+}
+
+
+/* =========================
+   SAVE SETTINGS
+========================= */
+
+$('saveSettingsBtn').onclick=async()=>{
+
+  const payload={
+
+    id:1,
+
+    site_name:$('siteName').value.trim(),
+
+    owner_name:$('ownerName').value.trim(),
+
+    owner_role:$('ownerRole').value.trim(),
+
+    payment_number:
+      $('paymentNumber').value.trim(),
+
+    whatsapp_number:
+      $('whatsappNumber').value.trim(),
+
+    support_email:
+      $('supportEmail').value.trim(),
+
+    hero_badge:
+      $('heroBadge').value.trim(),
+
+    hero_title:
+      $('heroTitle').value.trim(),
+
+    hero_text:
+      $('heroText').value.trim(),
+
+    about_title:
+      $('aboutTitle').value.trim(),
+
+    about_text:
+      $('aboutText').value.trim(),
+
+    seo_description:
+      $('seoDescription').value.trim()
+
+  };
+
+
+  const {error}=await client
+    .from('site_settings')
+    .upsert(payload,{onConflict:'id'});
+
+
+  if(error){
+
+    showMsg(
+      'panelMsg',
+      'Settings save error: '+error.message
+    );
+
+    return;
+  }
+
+
+  showMsg(
+    'panelMsg',
+    'Website settings successfully saved.',
+    true
+  );
+
+};
+
+
+/* =========================
+   CHANGE PASSWORD
+========================= */
+
+$('changePasswordBtn').onclick=async()=>{
+
+  const password=
+    $('newPassword').value;
+
+  if(password.length<8){
+
+    showMsg(
+      'panelMsg',
+      'Password কমপক্ষে ৮ অক্ষরের হতে হবে।'
+    );
+
+    return;
+  }
+
+
+  const {error}=await client.auth.updateUser({
+    password
+  });
+
+
+  if(error){
+
+    showMsg(
+      'panelMsg',
+      'Password change error: '+error.message
+    );
+
+    return;
+  }
+
+
+  $('newPassword').value='';
+
+
+  showMsg(
+    'panelMsg',
+    'Password successfully changed.',
+    true
+  );
+
+};
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+$('logoutBtn').onclick=async()=>{
+
+  await client.auth.signOut();
+
+  location.reload();
+
+};
+
+
+/* =========================
+   AUTO LOGIN
+========================= */
 
 async function boot(){
 
@@ -157,92 +1350,11 @@ async function boot(){
 
   if(session){
 
-    await requireAdmin(session.user);
+    await checkAdmin(session.user);
 
   }
 
 }
-
-$('login').onclick=async()=>{
-
-  const email=$('email').value.trim();
-
-  const password=$('password').value;
-
-  if(!email||!password){
-
-    msg(
-      'loginMsg',
-      'Email এবং Password দিন।'
-    );
-
-    return;
-  }
-
-  const {data,error}=await client.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if(error){
-
-    msg(
-      'loginMsg',
-      'Login failed: '+error.message
-    );
-
-    return;
-  }
-
-  await requireAdmin(data.user);
-
-};
-
-$('changePassword').onclick=async()=>{
-
-  const p=$('newPassword').value;
-
-  if(p.length<8){
-
-    msg(
-      'panelMsg',
-      'Password কমপক্ষে ৮ অক্ষরের দিন।'
-    );
-
-    return;
-  }
-
-  const {error}=await client.auth.updateUser({
-    password:p
-  });
-
-  if(error){
-
-    msg(
-      'panelMsg',
-      error.message
-    );
-
-    return;
-  }
-
-  $('newPassword').value='';
-
-  msg(
-    'panelMsg',
-    'Password সফলভাবে পরিবর্তন হয়েছে।',
-    true
-  );
-
-};
-
-$('logout').onclick=async()=>{
-
-  await client.auth.signOut();
-
-  location.reload();
-
-};
 
 boot();
 
