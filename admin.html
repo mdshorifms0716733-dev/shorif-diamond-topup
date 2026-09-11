@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Secure Admin — Shorif Diamond Topup Center BD</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{min-height:100vh}.adminWrap{max-width:760px;margin:30px auto;padding:16px}
+.card{background:var(--card);border:1px solid #252b3d;border-radius:18px;padding:22px;box-shadow:0 10px 35px rgba(0,0,0,.2)}
+input{width:100%;box-sizing:border-box;margin:7px 0 14px;padding:12px;border-radius:10px;border:1px solid #343b50;background:#0e1220;color:var(--text)}
+.hidden{display:none}.msg{padding:10px;border-radius:10px;margin:10px 0}.ok{background:#14351f}.err{background:#401b1b}.muted{opacity:.75}
+</style>
+</head>
+<body>
+<div class="adminWrap">
+  <div class="card" id="loginCard">
+    <h1>👑 Secure Admin Login</h1>
+    <p class="muted">শুধু অনুমোদিত Admin account-এর জন্য।</p>
+    <label>Email<input id="email" type="email" autocomplete="username" placeholder="Admin email"></label>
+    <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="Password"></label>
+    <button class="primary full" id="login">Login</button>
+    <div id="loginMsg"></div>
+  </div>
+
+  <div class="card hidden" id="panel">
+    <h1>⚙️ Admin Panel</h1>
+    <p>Logged in as <b id="who"></b></p>
+    <div id="panelMsg"></div>
+    <h2>🔐 Change Password</h2>
+    <p class="muted">নতুন password দিলে Supabase Auth-এ নিরাপদভাবে update হবে।</p>
+    <label>New Password<input id="newPassword" type="password" minlength="8" placeholder="কমপক্ষে ৮ অক্ষর"></label>
+    <button class="primary" id="changePassword">Change Password</button>
+    <hr>
+    <button class="secondary" id="logout">Logout</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+const {createClient}=supabase;
+const client=createClient(window.SUPABASE_URL,window.SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);
+function msg(el,text,ok=false){$(el).innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+text+'</div>'}
+async function requireAdmin(user){
+  const {data,error}=await client.from('profiles').select('role').eq('id',user.id).single();
+  if(error||!data||data.role!=='admin'){
+    await client.auth.signOut();
+    msg('loginMsg','এই account-এর Admin access নেই।');
+    return false;
+  }
+  $('who').textContent=user.email||user.id;
+  $('loginCard').classList.add('hidden');
+  $('panel').classList.remove('hidden');
+  return true;
+}
+async function boot(){
+  const {data:{session}}=await client.auth.getSession();
+  if(session) await requireAdmin(session.user);
+}
+$('login').onclick=async()=>{
+  const email=$('email').value.trim(), password=$('password').value;
+  const {data,error}=await client.auth.signInWithPassword({email,password});
+  if(error){msg('loginMsg','Login failed. Email/password ঠিক আছে কি না দেখুন।');return}
+  await requireAdmin(data.user);
+};
+$('changePassword').onclick=async()=>{
+  const p=$('newPassword').value;
+  if(p.length<8){msg('panelMsg','Password কমপক্ষে ৮ অক্ষরের দিন।');return}
+  const {error}=await client.auth.updateUser({password:p});
+  if(error){msg('panelMsg',error.message);return}
+  $('newPassword').value='';
+  msg('panelMsg','Password সফলভাবে পরিবর্তন হয়েছে।',true);
+};
+$('logout').onclick=async()=>{await client.auth.signOut();location.reload()};
+boot();
+</script>
+</body>
+</html>
