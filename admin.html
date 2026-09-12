@@ -1,117 +1,24 @@
-<!doctype html>
-<html lang="bn">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>👑 Admin Dashboard — Shorif Diamond Topup Center BD</title>
-<link rel="stylesheet" href="style.css">
-<style>
-body{min-height:100vh}.admin-page{max-width:1200px;margin:auto;padding:18px}
-.admin-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px}
-.admin-top h1{margin:0}.login-card,.dash-card{background:var(--card,#121827);border:1px solid #293148;border-radius:18px;padding:20px;box-shadow:0 12px 35px rgba(0,0,0,.2)}
-.login-card{max-width:520px;margin:45px auto}.hidden{display:none!important}
-.msg{padding:10px 12px;border-radius:10px;margin:10px 0}.ok{background:#14351f}.err{background:#401b1b}
-.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.tabs button{border:1px solid #34405a;background:#182033;color:inherit;padding:10px 13px;border-radius:10px;cursor:pointer}
-.tabs button.active{outline:2px solid #7c5cff}
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-.stat{padding:16px;border:1px solid #293148;border-radius:15px;background:#0e1422}.stat b{font-size:28px;display:block}
-label{display:block;margin:10px 0;font-weight:600}input,textarea,select{width:100%;box-sizing:border-box;margin-top:6px;padding:11px;border-radius:10px;border:1px solid #34405a;background:#0b101b;color:inherit}textarea{min-height:85px}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1}
-.table-wrap{overflow:auto}.orders{width:100%;border-collapse:collapse;min-width:900px}.orders th,.orders td{padding:10px;border-bottom:1px solid #293148;text-align:left;vertical-align:top}.orders th{font-size:13px;opacity:.8}
-.package{border:1px solid #293148;border-radius:14px;padding:14px;margin:10px 0}.package-actions{display:flex;gap:8px;flex-wrap:wrap}
-.muted{opacity:.75}.danger{background:#6d2020!important}.success{background:#174d2b!important}
-.photo-preview{max-width:120px;max-height:120px;border-radius:14px;margin-top:10px;object-fit:cover}
-@media(max-width:600px){.admin-page{padding:10px}.admin-top{align-items:flex-start;flex-direction:column}}
-</style>
-</head>
-<body>
-<div class="admin-page">
-  <div id="loginCard" class="login-card">
-    <h1>👑 Secure Admin Login</h1>
-    <p class="muted">শুধু অনুমোদিত Admin account-এর জন্য।</p>
-    <label>Email<input id="email" type="email" autocomplete="username" placeholder="Admin email"></label>
-    <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="Password"></label>
-    <button class="primary full" id="login">Login</button>
-    <div id="loginMsg"></div>
-  </div>
-
-  <div id="dashboard" class="hidden">
-    <div class="admin-top">
-      <div><h1>⚙️ Admin Dashboard</h1><div class="muted">Logged in: <b id="who"></b></div></div>
-      <div class="row"><button class="secondary" id="refresh">↻ Refresh</button><button class="secondary" id="logout">Logout</button></div>
-    </div>
-    <div id="dashMsg"></div>
-
-    <div class="tabs">
-      <button class="active" data-tab="overview">📊 Overview</button>
-      <button data-tab="orders">📦 Orders</button>
-      <button data-tab="packages">💎 Packages</button>
-      <button data-tab="settings">⚙️ Website</button>
-      <button data-tab="account">🔐 Account</button>
-    </div>
-
-    <section id="tab-overview" class="dash-card">
-      <h2>📊 Overview</h2>
-      <div class="grid2">
-        <div class="stat">Pending<b id="sPending">0</b></div>
-        <div class="stat">Processing<b id="sProcessing">0</b></div>
-        <div class="stat">Completed<b id="sCompleted">0</b></div>
-        <div class="stat">Cancelled<b id="sCancelled">0</b></div>
-      </div>
-      <h3>সাম্প্রতিক Order</h3>
-      <div id="recent"></div>
-    </section>
-
-    <section id="tab-orders" class="dash-card hidden">
-      <h2>📦 Customer Orders</h2>
-      <p class="muted">UID, Game Code ও Transaction ID থাকলে এখানে দেখা যাবে।</p>
-      <div class="table-wrap"><table class="orders"><thead><tr><th>Order</th><th>Customer</th><th>Game</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody id="ordersBody"></tbody></table></div>
-    </section>
-
-    <section id="tab-packages" class="dash-card hidden">
-      <h2>💎 Package Management</h2>
-      <div id="packagesBox"></div>
-      <button class="secondary full" id="addPackage">＋ Add Package</button>
-    </section>
-
-    <section id="tab-settings" class="dash-card hidden">
-      <h2>⚙️ Website Settings</h2>
-      <div class="grid2">
-        <label>Website Name<input id="site_name"></label>
-        <label>Owner Name<input id="owner_name"></label>
-        <label>Owner Role<input id="owner_role"></label>
-        <label>bKash Number<input id="payment_number"></label>
-        <label>Nagad Number<input id="nagad_number"></label>
-        <label>WhatsApp Number<input id="whatsapp_number"></label>
-        <label>Support Email<input id="support_email"></label>
-        <label>Notice Text<textarea id="notice_text"></textarea></label>
-        <label>Hero Badge<input id="hero_badge"></label>
-        <label>Hero Title<input id="hero_title"></label>
-        <label>Hero Text<textarea id="hero_text"></textarea></label>
-        <label>About Title<input id="about_title"></label>
-        <label>About Text<textarea id="about_text"></textarea></label>
-        <label>SEO Description<textarea id="seo_description"></textarea></label>
-      </div>
-      <button class="primary full" id="saveSettings">💾 Save Website Settings</button>
-      <hr>
-      <h3>👤 Admin Photo</h3>
-      <p class="muted">ছবি Supabase Storage-এর admin-photos bucket-এ আপলোড হবে।</p>
-      <input id="adminPhoto" type="file" accept="image/*">
-      <button class="secondary" id="uploadPhoto">Upload Photo</button>
-      <div id="photoMsg"></div>
-    </section>
-
-    <section id="tab-account" class="dash-card hidden">
-      <h2>🔐 Admin Account</h2>
-      <label>New Password<input id="newPassword" type="password" minlength="8" placeholder="কমপক্ষে ৮ অক্ষর"></label>
-      <button class="primary" id="changePassword">Change Password</button>
-      <p class="muted">Admin access Supabase Auth + profiles role দিয়ে নিয়ন্ত্রিত।</p>
-    </section>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="admin.js"></script>
-</body>
-</html>
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Panel — Shorif Diamond Topup Center BD</title><link rel="stylesheet" href="style.css"><style>
+body{min-height:100vh}.adminWrap{max-width:1000px;margin:25px auto;padding:15px}.adminCard{background:var(--card,#111522);border:1px solid #30364a;border-radius:20px;padding:24px;box-shadow:0 12px 35px #0005}.adminHead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.adminTabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.adminTabs button{background:#202536;color:#fff}.adminTabs button.active{background:var(--accent,#7c5cff)}.panel{display:none}.panel.active{display:block}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.pkgRow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;margin:8px 0}.notice{padding:12px;border-radius:12px;background:#18213a;color:#cbd5ff;margin:10px 0}.orderRow{padding:14px;border:1px solid #30364a;border-radius:14px;margin:10px 0}.orderRow button{margin-right:6px}.danger{background:#7f2434!important}@media(max-width:700px){.two,.pkgRow{grid-template-columns:1fr}.adminWrap{padding:10px}}
+</style></head><body><div class="adminWrap"><div class="adminCard" id="loginCard"><h1>👑 Admin Login</h1><p class="muted">Shorif Diamond Topup Center BD</p><div class="notice">Secure mode চালু করতে Supabase configure করুন। Configure না করা পর্যন্ত demo login শুধু এই browser-এ কাজ করবে।</div><label>Username<input id="user" placeholder="admin"></label><label>Password<input id="pass" type="password" placeholder="Password"></label><button class="primary full" id="loginBtn">Login</button><p id="loginMsg" class="hint"></p></div>
+<div class="adminCard hidden" id="panel"><div class="adminHead"><div><h1>⚙️ Full Website Admin</h1><p class="muted" id="mode"></p></div><button class="secondary" id="logout">Logout</button></div><div class="adminTabs"><button class="active" data-tab="general">General</button><button data-tab="design">Design</button><button data-tab="packages">Packages</button><button data-tab="orders">Orders</button><button data-tab="security">Security</button></div>
+<div id="general" class="panel active"><div class="two"><label>Website Name<input id="siteName"></label><label>Owner Name<input id="ownerName"></label><label>Owner Role<input id="ownerRole"></label><label>Payment Number<input id="payment"></label><label>WhatsApp Number<input id="whatsapp"></label><label>Support Email<input id="email"></label><label>Hero Badge<input id="badge"></label><label>Packages Heading<input id="packagesTitle"></label><label>Packages Subtitle<input id="packagesSubtitle"></label><label>About Title<input id="aboutTitle"></label></div><label>Hero Title<input id="heroTitle"></label><label>Hero Description<textarea id="heroText"></textarea></label><label>About Text<textarea id="aboutText"></textarea></label><label>SEO Description<textarea id="seo"></textarea></label></div>
+<div id="design" class="panel"><div class="two"><label>Background<input id="bg" type="color"></label><label>Accent<input id="accent" type="color"></label><label>Card Background<input id="card" type="color"></label><label>Text<input id="text" type="color"></label><label>Trust Bar<select id="trust"><option value="yes">Show</option><option value="no">Hide</option></select></label></div><p class="hint">Owner photo পরিবর্তনের জন্য assets/owner.png বদলাতে হবে; GitHub Pages-এ browser থেকে server file overwrite করা যায় না।</p></div>
+<div id="packages" class="panel"><div id="pkgEditor"></div><button class="secondary" id="addPkg">＋ Add Package</button></div>
+<div id="orders" class="panel"><p class="muted">Supabase configure করলে এখানে database orders দেখা ও status পরিবর্তন করা যাবে।</p><div id="ordersList"></div></div>
+<div id="security" class="panel"><h2>🔐 Password</h2><label>New Password<input id="newPass" type="password" minlength="8"></label><button class="primary" id="changePass">Change Password</button><p class="hint">Secure mode-এ Supabase Auth password বদলাবে।</p></div>
+<hr><button class="primary full" id="save">💾 Save All Changes</button><p id="saveMsg" class="hint"></p></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script>
+const $=id=>document.getElementById(id);const secure=()=>window.SUPABASE_URL&&window.SUPABASE_PUBLISHABLE_KEY&&window.SUPABASE_URL.indexOf('YOUR_')<0;let client=null,sessionUser=null;const defaults={siteName:'Shorif Diamond Topup Center BD',ownerName:'Shorif',ownerRole:'Owner & Top-Up Manager',payment:'01781893290',whatsapp:'01781893290',email:'mdshorifms0716733@gmail.com',badge:'⚡ FAST • TRUSTED • MANUAL TOP-UP',heroTitle:'Free Fire Diamond <span>Top-Up</span>',heroText:'আপনার UID ও Game Code দিয়ে সহজে Diamond Top-Up করুন। বর্তমানে টপ-আপ ম্যানুয়ালি করা হয়।',packagesTitle:'🌟 UID TOPUP LIST 🌟',packagesSubtitle:'🥇 শুধুমাত্র Game Code দিয়ে 🥇',aboutTitle:'আপনার আস্থা আমাদের ❤️',aboutText:'Shorif Diamond Topup Center BD — বর্তমানে ম্যানুয়ালভাবে সহজ Free Fire Top-Up সেবা।',seo:'Shorif Diamond Topup Center BD - Free Fire Diamond Top Up',bg:'#090b13',accent:'#7c5cff',card:'#111522',text:'#f5f7ff',trust:'yes',packages:[['0.25$','25 💎','25 Tk'],['0.50$','50 💎','40 Tk'],['1$','115 💎','80 Tk'],['2$','240 💎','160 Tk'],['3$','355 💎','240 Tk'],['4$','480 💎','320 Tk'],['5$','610 💎','400 Tk']]};let S=JSON.parse(localStorage.getItem('shorifV2')||'null')||defaults;
+function fill(){['siteName','ownerName','ownerRole','payment','whatsapp','email','badge','heroTitle','heroText','packagesTitle','packagesSubtitle','aboutTitle','aboutText','seo','bg','accent','card','text','trust'].forEach(k=>$(k).value=S[k]);renderPkgs();}
+function renderPkgs(){const e=$('pkgEditor');e.innerHTML='';S.packages.forEach((p,i)=>{const r=document.createElement('div');r.className='pkgRow';r.innerHTML=`<input value="${p[0]}" data-i="${i}" data-k="0"><input value="${p[1]}" data-i="${i}" data-k="1"><input value="${p[2]}" data-i="${i}" data-k="2"><button class="danger" data-del="${i}">Delete</button>`;e.appendChild(r)});e.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{S.packages.splice(+b.dataset.del,1);renderPkgs()})}
+function readForm(){['siteName','ownerName','ownerRole','payment','whatsapp','email','badge','heroTitle','heroText','packagesTitle','packagesSubtitle','aboutTitle','aboutText','seo','bg','accent','card','text','trust'].forEach(k=>S[k]=$(k).value);document.querySelectorAll('#pkgEditor input[data-i]').forEach(x=>S.packages[+x.dataset.i][+x.dataset.k]=x.value)}
+async function loadDb(){if(!secure())return;client=supabase.createClient(window.SUPABASE_URL,window.SUPABASE_PUBLISHABLE_KEY);const {data:{session}}=await client.auth.getSession();if(!session)return;sessionUser=session.user;const pr=await client.from('profiles').select('role').eq('id',session.user.id).single();if(pr.error||pr.data?.role!=='admin'){await client.auth.signOut();$('loginMsg').textContent='এই account-এর Admin access নেই।';return}const {data}=await client.from('site_settings').select('*').eq('id',1).maybeSingle();if(data){Object.assign(S,{siteName:data.site_name,ownerName:data.owner_name,ownerRole:data.owner_role,payment:data.payment_number,whatsapp:data.whatsapp_number,email:data.support_email,badge:data.hero_badge||S.badge,heroTitle:data.hero_title||S.heroTitle,heroText:data.hero_text||S.heroText,aboutTitle:data.about_title||S.aboutTitle,aboutText:data.about_text||S.aboutText,seo:data.seo_description||S.seo})}const p=await client.from('packages').select('id,title,diamonds,price').eq('active',true).order('sort_order');if(p.data?.length)S.packages=p.data.map(x=>[x.title,x.diamonds,x.price]);$('mode').textContent='🟢 Secure Supabase Admin';showPanel();fill();loadOrders()}
+function showPanel(){$('loginCard').classList.add('hidden');$('panel').classList.remove('hidden')}
+$('loginBtn').onclick=async()=>{if(secure()){client=client||supabase.createClient(window.SUPABASE_URL,window.SUPABASE_PUBLISHABLE_KEY);const r=await client.auth.signInWithPassword({email:$('user').value.trim(),password:$('pass').value});if(r.error){$('loginMsg').textContent='Login failed: '+r.error.message;return}const pr=await client.from('profiles').select('role').eq('id',r.data.user.id).single();if(pr.data?.role!=='admin'){await client.auth.signOut();$('loginMsg').textContent='Admin access নেই।';return}sessionUser=r.data.user;$('mode').textContent='🟢 Secure Supabase Admin';showPanel();fill();loadOrders();}else{if($('user').value.trim()==='admin'&&$('pass').value==='Shorif@12345'){sessionStorage.setItem('shorifDemoAdmin','1');$('mode').textContent='🟠 Demo mode — browser only';showPanel();fill()}else $('loginMsg').textContent='ভুল Admin Login'}};
+$('save').onclick=async()=>{readForm();localStorage.setItem('shorifV2',JSON.stringify(S));if(secure()&&client&&sessionUser){const s={id:1,site_name:S.siteName,owner_name:S.ownerName,owner_role:S.ownerRole,payment_number:S.payment,whatsapp_number:S.whatsapp,support_email:S.email,hero_badge:S.badge,hero_title:S.heroTitle,hero_text:S.heroText,about_title:S.aboutTitle,about_text:S.aboutText,seo_description:S.seo};const r=await client.from('site_settings').upsert(s);if(r.error){$('saveMsg').textContent='Save error: '+r.error.message;return}await client.from('packages').update({active:false}).eq('active',true);for(let i=0;i<S.packages.length;i++){const p=S.packages[i];await client.from('packages').insert({title:p[0],diamonds:p[1],price:p[2],active:true,sort_order:i})}}$('saveMsg').textContent=secure()?'✅ Website settings/database updated.':'✅ Demo changes saved in this browser.'};
+$('addPkg').onclick=()=>{S.packages.push(['New Package','💎','0 Tk']);renderPkgs()};document.querySelectorAll('.adminTabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.adminTabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(b.dataset.tab).classList.add('active')});$('changePass').onclick=async()=>{if(!secure()||!client){$('saveMsg').textContent='Secure mode চালু করে password change করুন।';return}const p=$('newPass').value;if(p.length<8){$('saveMsg').textContent='Password কমপক্ষে ৮ অক্ষর।';return}const r=await client.auth.updateUser({password:p});$('saveMsg').textContent=r.error?r.error.message:'✅ Password changed.'};$('logout').onclick=async()=>{if(client)await client.auth.signOut();sessionStorage.removeItem('shorifDemoAdmin');location.reload()};
+async function loadOrders(){if(!secure()||!client)return;const r=await client.from('orders').select('*').order('created_at',{ascending:false});if(r.error){$('ordersList').textContent=r.error.message;return}$('ordersList').innerHTML=(r.data||[]).map(o=>`<div class="orderRow"><b>${o.customer_name||''}</b> — ${o.uid||''}<br>Package: ${o.package_id||''}<br>Phone: ${o.customer_phone||''}<br>Status: <b>${o.status}</b><br><button onclick="setStatus('${o.id}','processing')">Processing</button><button onclick="setStatus('${o.id}','completed')">Completed</button><button class="danger" onclick="setStatus('${o.id}','cancelled')">Cancel</button></div>`).join('')||'<p class="muted">No orders.</p>'}
+window.setStatus=async(id,status)=>{await client.from('orders').update({status}).eq('id',id);loadOrders()};
+loadDb();
+</script></body></html>
