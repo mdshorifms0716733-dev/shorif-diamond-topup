@@ -1,23 +1,30 @@
-SHORIF DIAMOND TOPUP CENTER BD — FULL WEBSITE
+SHORIF DIAMOND TOPUP CENTER BD — FULL ADMIN PANEL
 
-Included:
-- index.html: Home / Tutorial / Topup / Contact Us, notice popup, intro animation, manual order, payment, tracking
-- account.html + account.js: Player Sign Up/Login, profile photo, order history
-- admin.html + admin.js: secure Supabase Admin Panel, packages, orders, settings, admin photo, password change
-- style.css: responsive gaming-inspired design
-- script.js: public Supabase app logic
-- supabase_schema.sql: database, RLS, tracking RPC, storage buckets/policies, package seed
-- supabase-config.js: public URL + publishable key only
-- assets/owner.png: supplied Admin photo
+This package contains a new secure Supabase Auth based Admin Dashboard.
 
-SETUP:
-1) In Supabase SQL Editor run ALL of supabase_schema.sql.
-2) Confirm the existing Admin UUID is still 0a17e9b4-617a-4ff2-9ea6-42912dbb2520 and role=admin.
-3) If Email confirmation is enabled in Supabase Auth, Player must verify email before first login.
-4) Upload the whole folder to GitHub Pages. Keep assets/owner.png in the assets folder.
-5) Open index.html.
+Files:
+- admin.html
+- admin.js
+
+Use:
+1. Keep your existing supabase-config.js.
+2. Replace old admin.html and admin.js in GitHub with these two files.
+3. Open:
+   https://mdshorifms0716733-dev.github.io/shorif-diamond-topup/admin.html
+4. Login with the Admin email/password already created in Supabase Authentication.
+5. The account must have role='admin' in public.profiles.
+
+Dashboard:
+- Overview
+- Customer Orders + status update
+- Package management
+- Website settings
+- bKash/Nagad/WhatsApp/support email
+- Notice
+- Admin photo upload
+- Admin password change
 
 IMPORTANT:
-- Do NOT put a service_role/secret key in supabase-config.js.
-- Manual topup is the current flow. Auto-topup can be added later through a secure server-side/API integration.
-- Payment accounts and any business operation should follow the payment provider's rules and involve a parent/guardian where required.
+- This panel uses the existing database. It does not replace your tables.
+- Because your current packages table has a different schema from the newer sample schema, package editing first tries the name/title form and falls back to title-only updates.
+- If the database rejects a field, the error will be shown in the dashboard; do not paste secret/service_role keys.
